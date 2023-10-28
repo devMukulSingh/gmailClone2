@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getMails } from '../service/api';
-import { Box,Divider,styled, Typography } from '@mui/material';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { getMails, moveMailToBin } from '../service/api';
+import { Box,Divider,styled, Typography,Checkbox } from '@mui/material';
 import SingleMail from '../components/SingleMail';
 import { EMPTY_TABS } from '../constants/constants';
+import { DeleteOutline } from '@mui/icons-material';
 ///////////////////////////////////////////////
 
 const MainBox = styled(Box)({
@@ -14,6 +14,7 @@ const Sent = ( ) => {
 
   const[mails,setMails] = useState(null);
   const[refresh, setRefresh ] = useState(null);
+  const[checkedMails, setCheckedMails] = useState([]);
 
 
   useEffect( () => {
@@ -24,6 +25,19 @@ const Sent = ( ) => {
     getMail();
   },[refresh]);
 
+  const handleDeleteChecked = () => {
+    moveMailToBin(selectedMails);
+  }
+
+  const onChangeCheckAll = (e) => {
+    if(e.target.checked){
+      const Emails = mails.map( mail => mail?._id );
+      setCheckedMails(Emails);
+    }
+    else{
+      setCheckedMails([]);
+    }
+  }
 
   return (
     <MainBox>
@@ -36,11 +50,15 @@ const Sent = ( ) => {
             </>
             : 
             <>
-              <CheckBoxOutlineBlankIcon sx={{ marginBottom:'10px', cursor:'pointer'}}/>
-                <Divider/>
+              <Box sx={{ display:'flex',alignItems:'center'}}>
+                <Checkbox  onChange = { (e) => onChangeCheckAll(e) } />
+                <DeleteOutline sx={{ cursor:'pointer' }} onClick = { handleDeleteChecked } />
+              </Box>
               { mails && mails?.map( (mail,index) => {
                   return(
-                    <SingleMail mail={mail} key={index} setRefresh={setRefresh} refresh={refresh}/>
+                    <SingleMail mail={mail} key={index} setRefresh={setRefresh} refresh={refresh}
+                      checkedMails={checkedMails} setCheckedMails={setCheckedMails}
+                      />
                     )
                   })}
             </> 

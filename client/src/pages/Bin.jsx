@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getBinMail, getMails } from '../service/api';
-import { Box,Divider,Typography,styled } from '@mui/material';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Box,Divider,Typography,styled, Checkbox } from '@mui/material';
 import SingleMail from '../components/SingleMail';
 import { EMPTY_TABS } from "../constants/constants.js";
+import { DeleteOutline } from '@mui/icons-material';
 ///////////////////////////////////////////////
 
 const MainBox = styled(Box)({
@@ -14,28 +14,52 @@ const Bin = () => {
 
   const[mails,setMails] = useState(null);
   const[refresh, setRefresh ] = useState(null);
-
+  const[checkedMails, setCheckedMails] = useState([]);
 
   useEffect( () => {
-    const getMail = async() => {
-      const res = await getBinMail();
-      setMails(res.data);
-    }
     getMail();
   },[refresh]);
 
+  const getMail = async() => {
+    const res = await getBinMail();
+    setMails(res.data);
+  }
+
+  const onChangeCheckAll = (e) => {
+
+    if(e.target.checked){
+      const Emails = mails?.map( mail => mail?._id );
+      setCheckedMails(Emails);
+    }
+    else{
+      setCheckedMails([]);
+    }
+  }
+  const handleDeleteChecked = () => {
+    deleteMail(checkedMails);
+  }
   return (
 
     <MainBox>
       {
         mails!=null ? 
         <>
-          <CheckBoxOutlineBlankIcon sx={{ marginBottom:'10px', cursor:'pointer'}}/>
-          <Divider/>
+        <Box sx={{ display:'flex',alignItems:'center'}}>
+          <Checkbox  onChange = { (e) => onChangeCheckAll(e) } />
+          <DeleteOutline sx={{ cursor:'pointer' }} onClick = { handleDeleteChecked } />
+        </Box>
+
+        <Divider/>
         {
           mails && mails?.map( (mail,index) => {
             return(
-              <SingleMail mail={mail} key={index} setRefresh={setRefresh} refresh={refresh}/>
+              <SingleMail 
+              mail={mail} 
+              key={index} 
+              setRefresh={setRefresh} 
+              refresh={refresh} 
+              checkedMails={checkedMails} 
+              setCheckedMails={setCheckedMails}/>
               )
             })
           }

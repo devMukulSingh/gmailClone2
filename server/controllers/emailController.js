@@ -64,7 +64,7 @@ try {
 export const moveMailToBinController = async(req,res) => {
 
     try {
-        await emailModel.updateOne( { _id:req.body.id }, { $set : { Bin:req.body.bin } } );
+        await emailModel.updateMany( { _id:req.body.id }, { $set : { Bin:req.body.bin } } );
         res.status(200).json(`Email moved to Bin Successfully`);
     } catch (error) {
             res.status(500).json(`Error in moveMailToBinController ${error}`);
@@ -81,8 +81,8 @@ try {
 }
 export const deleteMailController = async(req,res) => {
 try {       
-        console.log(req.body);
-        const deletedMail = await emailModel.deleteOne( { _id : req.body.id } );
+
+        const deletedMail = await emailModel.deleteMany( { _id : req.body.id } );
         res.status(200).json(deletedMail);
 } catch (error) {
         res.status(500).json(`Error in deleteMailController ${error}`);

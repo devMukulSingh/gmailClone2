@@ -6,7 +6,9 @@ import { Box } from "@mui/material";
 
 
 const Home = () => {
+
   const[open,setOpen ] = useState(true);
+  
   return (
     <>
         <Header setOpen={ setOpen } />

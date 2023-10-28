@@ -1,6 +1,5 @@
-import { Box, Typography, styled } from '@mui/material'
+import { Box, Typography, styled, Checkbox } from '@mui/material'
 import React from 'react';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarIcon from '@mui/icons-material/Star';
 import {  DeleteOutline } from '@mui/icons-material';
@@ -18,7 +17,7 @@ const MainBox = styled(Box)({
 
 ////////////////////////////////////////////////////////////////////
 
-const SingleMail = ( { mail,setRefresh } ) => {
+const SingleMail = ( { mail,setRefresh,checkedMails, setCheckedMails } ) => {
 
     const navigate = useNavigate();
 
@@ -41,15 +40,21 @@ const SingleMail = ( { mail,setRefresh } ) => {
         setRefresh(prev => !prev);
     }
 
-    const OnChangeCheckBox = (e) => {
-        console.log(e);
+    const onChangeCheckBox = () => {
+        if(checkedMails.includes(mail?._id)){
+            setCheckedMails( prev => prev.filter( id => id != mail?._id )  );
+        }
+        else{
+            setCheckedMails( prev => [...prev,mail?._id] );
+        }
     }
 ///////////////////////////////////////////////////////////////////////////////////
   return (
     <MainBox>
 
-        <Box sx={{ display:'flex', gap:1 , flex:0.05}}>
-            <CheckBoxOutlineBlankIcon sx={{ cursor:'pointer'}} fontSize='small' onChange = { (e) => OnChangeCheckBox(e) }/>
+        <Box sx={{ display:'flex', gap:1 , flex:0.05, alignItems:'center'}}>
+            <Checkbox size='small' onChange = { () => onChangeCheckBox() } 
+            checked={ checkedMails && checkedMails.includes(mail?._id) } />
            { mail?.Starred ? 
             <StarIcon sx={{ color:'#F7CA4C', cursor:'pointer' }} fontSize='small'  onClick = {  handleStarToggle  }/> : 
             <StarOutlineIcon sx={{cursor:'pointer' }} fontSize='small'  onClick = { handleStarToggle } />}
