@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getBinMail, getMails } from '../service/api';
+import { getBinMail, getMails, deleteMail } from '../service/api';
 import { Box,Divider,Typography,styled, Checkbox } from '@mui/material';
 import SingleMail from '../components/SingleMail';
 import { EMPTY_TABS } from "../constants/constants.js";
@@ -35,8 +35,9 @@ const Bin = () => {
       setCheckedMails([]);
     }
   }
-  const handleDeleteChecked = () => {
-    deleteMail(checkedMails);
+  const handleDeleteChecked = async() => {
+    await deleteMail(checkedMails);
+    setRefresh( prev => !prev);
   }
   return (
 

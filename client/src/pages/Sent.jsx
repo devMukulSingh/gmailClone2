@@ -7,7 +7,7 @@ import { DeleteOutline } from '@mui/icons-material';
 ///////////////////////////////////////////////
 
 const MainBox = styled(Box)({
-  padding:' 25px 20px',
+  padding:'25px 20px',
 })
 
 const Sent = ( ) => {
@@ -25,8 +25,10 @@ const Sent = ( ) => {
     getMail();
   },[refresh]);
 
-  const handleDeleteChecked = () => {
-    moveMailToBin(selectedMails);
+  const handleDeleteChecked = async() => {
+    await moveMailToBin(checkedMails);
+    setRefresh(prev => !prev);
+
   }
 
   const onChangeCheckAll = (e) => {

@@ -32,10 +32,10 @@ const SingleMail = ( { mail,setRefresh,checkedMails, setCheckedMails } ) => {
 
     const handleDeleteBtn = async() => {
         if(mail?.Bin==true){
-            await deleteMail( { id : mail?._id });
+            await deleteMail([mail?._id]);
         }
         else{
-            await moveMailToBin( { id:mail?._id, bin:!mail?.Bin } );
+            await moveMailToBin([mail?._id]);
         }
         setRefresh(prev => !prev);
     }

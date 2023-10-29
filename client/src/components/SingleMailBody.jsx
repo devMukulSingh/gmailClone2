@@ -4,7 +4,7 @@ import { Box, Typography, styled } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { DeleteOutline } from '@mui/icons-material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import { moveMailToBin } from '../service/api';
+import { deleteMail, moveMailToBin } from '../service/api';
 ///////////////////////////////////////////////////////////////
 
 const MainBox = styled(Box)({
@@ -23,7 +23,12 @@ const SingleMailBody = () => {
       window.history.back();
     }
     const handleDeleteBtn = async() => {
-      await moveMailToBin( { id:state?._id, bin:!state?.Bin} );
+      if(state?.Bin == true ){
+        await deleteMail([state?._id]);
+      }
+      else{
+        await moveMailToBin([state?._id]);
+      }
       window.history.back();
     }
   return (

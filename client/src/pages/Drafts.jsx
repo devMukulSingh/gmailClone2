@@ -15,20 +15,21 @@ const Drafts = () => {
 
   const[mails,setMails] = useState(null);
   const[refresh, setRefresh ] = useState(null);
-  const[checkedMails,setCheckedMails] = useState(null);
+  const[checkedMails,setCheckedMails] = useState([]);
 
   useEffect( () => {
     const getMail = async() => {
       const res = await getDraftMails();
       setMails(res.data);
-      console.log(mails);
     }
     getMail();
   },[refresh]);
 
-  const handleDeleteChecked = () => {
-    moveMailToBin(selectedMails);
+  const handleDeleteChecked = async() => {
+    await moveMailToBin(selectedMails);
+    setRefresh(prev => !prev);
   }
+
   const onChangeCheckAll = (e) => {
     if(e.target.checked){
       const Emails = mails.map( mail => mail?._id);

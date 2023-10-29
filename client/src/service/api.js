@@ -5,7 +5,7 @@ const url = "http://localhost:8000";
 export const saveSentMail = async(data) => {
 
     try {
-        await axios.post(`${url}/save-sent`,data)
+        return await axios.post(`${url}/save-sent`,data)
     } catch (error) {
         console.log(`Error in saveSentMailApi ${error}`);
     }
@@ -13,7 +13,7 @@ export const saveSentMail = async(data) => {
 
 export const saveDraftMail = async(data) => {
     try {
-        await axios.post(`${url}/save-draft`,data);
+        return await axios.post(`${url}/save-draft`,data);
     } catch (error) {
         console.log(`Error in saveDraftMailApi ${error}`);
     }
@@ -37,7 +37,7 @@ export const getDraftMails = async() => {
 
 export const toggleStarred = async(data) => {
     try {
-        await axios.put(`${url}/toggle-star`,data);
+        return await axios.put(`${url}/toggle-star`,data);
     } catch (error) {
         console.log(`Error in toggleStarred api ${error}`);
     }
@@ -53,7 +53,7 @@ export const getStarredMail = async() => {
 
 export const moveMailToBin = async(data) => {
 try {
-        await axios.put(`${url}/move-bin`,data);
+      return await axios.put(`${url}/move-bin`,data);
 } catch (error) {
         console.log(`Error in moveMailToBin Api ${error}`);
 }
@@ -62,7 +62,7 @@ try {
 export const getBinMail = async() => {
 
 try {
-        return await axios.get(`${url}/get-bin`);
+    return await axios.get(`${url}/get-bin`);
     
 } catch (error) {
     console.log(`Error in getBinMail Api ${error}`);

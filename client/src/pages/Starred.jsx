@@ -35,8 +35,9 @@ const Starred = () => {
       setCheckedMails([]);
     }
   }
-  const handleDeleteChecked = () => {
-      moveMailToBin({checkedMails , bin:!mails?.bin});
+  const handleDeleteChecked = async() => {
+      await moveMailToBin(checkedMails);
+      setRefresh(prev => !prev);
   }
 
   return (
